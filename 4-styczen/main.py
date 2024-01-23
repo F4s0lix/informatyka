@@ -46,6 +46,25 @@ def srednia_dni() -> str:
     for key in dni:
         dni[key] = oblicz_srednia([DATA[dzien] for dzien in range(key, len(DATA), 7)])
     return dni
+
+def daty_temperatura() -> str:
+    i = 0
+    odp = []
+    while i < len(DATA) - 1:
+        j = i
+        temp = [DATA[j-1]] if DATA[j-1][1] == DATA[j][1] else []
+        while DATA[i][1] == DATA[j][1]:
+            temp.append(DATA[j]) 
+            j += 1
+            if j > len(DATA):
+                break
+        i = j
+        odp.append(temp)
+        i += 1
+    return odp
+
+print('=' * 30 + ' zadanie 3.1 ' + '=' * 30)
+
 print('=' * 30 + ' zadanie 3.3 ' + '=' * 30)
 print(ile_ponizej_srednia())
 print('=' * 73)
