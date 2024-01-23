@@ -1,9 +1,7 @@
 def get_data() -> list:
     with open('temperatury_nowy_york.txt') as file:
         file: list = file.read().split('\n')
-    data: list = []
-    for date in file:
-        data.append(date.split(' '))
+    data: list = list(map(lambda x: x.split(' '), file)) #tablica tablic z datą i temperaturą
     for date in data:
         date[1] = int(date[1])
     return data
@@ -20,32 +18,14 @@ NAZWA_DNI: dict = {
 }
 
 def oblicz_srednia(data) -> float:
-    suma: int = 0
-    for date in data:
-        suma += date[1]
-    return(suma / len(data))
+    return sum(date[1] for date in data) / len(data)
 
 def ile_ponizej_srednia() -> int:
     srednia = oblicz_srednia(DATA)
-    suma: int = 0
-    for date in DATA:
-        if date[1] < srednia:
-            suma += 1
-    return suma
+    return sum(date[1] < srednia for date in DATA)
 
 def srednia_dni() -> str:
-    dni: dict = {
-        0: [],
-        1: [],
-        2: [],
-        3: [],
-        4: [],
-        5: [],
-        6: [],
-    }
-    for key in dni:
-        dni[key] = oblicz_srednia([DATA[dzien] for dzien in range(key, len(DATA), 7)])
-    return dni
+    return {key: oblicz_srednia([DATA[dzien] for dzien in range(key, len(DATA), 7)]) for key in range(7)}
 
 def daty_temperatura() -> None:
     i = 0
