@@ -64,7 +64,12 @@ def daty_temperatura() -> str:
     return odp
 
 print('=' * 30 + ' zadanie 3.1 ' + '=' * 30)
-
+wynik: list = daty_temperatura()
+wynik_dlugosci = list(map(lambda x: len(x), wynik))
+najwieksza_index = wynik_dlugosci.index(max(wynik_dlugosci))
+print(wynik[najwieksza_index][0][0] + ' - ' + wynik[najwieksza_index][-1][0])
+#FIXME: wypisuje jeden a powinien kilka największych - do naprawy
+print('=' * 73)
 print('=' * 30 + ' zadanie 3.3 ' + '=' * 30)
 print(ile_ponizej_srednia())
 print('=' * 73)
