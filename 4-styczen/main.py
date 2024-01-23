@@ -47,7 +47,7 @@ def srednia_dni() -> str:
         dni[key] = oblicz_srednia([DATA[dzien] for dzien in range(key, len(DATA), 7)])
     return dni
 
-def daty_temperatura() -> str:
+def daty_temperatura() -> None:
     i = 0
     odp = []
     while i < len(DATA) - 1:
@@ -58,17 +58,37 @@ def daty_temperatura() -> str:
             j += 1
             if j > len(DATA):
                 break
-        i = j
+        i = j + 1
         odp.append(temp)
-        i += 1
     
-    odp_dlug = list(map(lambda x: len(x), odp))
+    odp_dlug = list(map(len, odp))
+    wynik = [odp[i] for i in range(len(odp_dlug)) if odp_dlug[i] == max(odp_dlug)]
+    for w in wynik:
+        print(w[0][0] + ' - ' + w[-1][0])
+
+def rosnaca_temperatura():
+    i = 0
+    odp = []
+    while i < len(DATA) - 1:
+        j = i
+        temp = []
+        while DATA[j][1] >= DATA[j - 1][1]:
+            temp.append(DATA[j])
+            if j + 1 >= len(DATA) - 1:
+                break
+            j += 1
+        i = j + 1
+        odp.append(temp)
+    odp_dlug = list(map(len, odp))
     wynik = [odp[i] for i in range(len(odp_dlug)) if odp_dlug[i] == max(odp_dlug)]
     for w in wynik:
         print(w[0][0] + ' - ' + w[-1][0])
 
 print('=' * 30 + ' zadanie 3.1 ' + '=' * 30)
 daty_temperatura()
+print('=' * 73)
+print('=' * 30 + ' zadanie 3.2 ' + '=' * 30)
+rosnaca_temperatura()
 print('=' * 73)
 print('=' * 30 + ' zadanie 3.3 ' + '=' * 30)
 print(ile_ponizej_srednia())
