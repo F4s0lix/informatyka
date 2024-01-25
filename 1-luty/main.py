@@ -20,9 +20,22 @@ with open('wynik.txt', 'a') as file:
     file.write(str(ile_zrownowazonych) + '\n')
     file.write(str(ile_prawie_zrownowazonych()) + '\n')
 
-najwiecej_anagramow = [d for d in DATA if d.count('0') == d.count('1')]
-#FIXME: BŁĄD - jeżeli są większe można zrobić więcej anagramów
-with open('wynik.txt', 'a') as file:
-    file.write('Zadanie 3.2\n')
-    for a in najwiecej_anagramow:
-        file.write(a + '\n')
+max_len = max(map(len, DATA))
+
+anagramy = set()
+def generuj_anagramy(ciag: list, index: int=0) -> set:
+    #TODO: lepszy algorytm
+    if index == len(ciag) - 1:
+        anagramy.add(''.join(ciag))
+    else:
+        for i in range(index, len(ciag)):
+            ciag[index], ciag[i] = ciag[i], ciag[index]
+            generuj_anagramy(ciag, index + 1)
+            ciag[index], ciag[i] = ciag[i], ciag[index]
+
+ilosc = []
+for d in DATA:
+    if len(d) != max_len:
+        pass
+    generuj_anagramy()
+    #TODO: nie wiem zrób coś
