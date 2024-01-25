@@ -17,15 +17,13 @@ NAZWA_DNI: dict = {
     6: 'czwartek',
 }
 
-def oblicz_srednia(data) -> float:
-    return sum(date[1] for date in data) / len(data)
+oblicz_srednia = lambda data: sum(date[1] for date in data) / len(data)
 
 def ile_ponizej_srednia() -> int:
     srednia = oblicz_srednia(DATA)
     return sum(date[1] < srednia for date in DATA)
 
-def srednia_dni() -> str:
-    return {key: oblicz_srednia([DATA[dzien] for dzien in range(key, len(DATA), 7)]) for key in range(7)}
+srednia_dni = lambda: {key: oblicz_srednia([DATA[dzien] for dzien in range(key, len(DATA), 7)]) for key in range(7)}
 
 def daty_temperatura() -> None:
     i = 0
