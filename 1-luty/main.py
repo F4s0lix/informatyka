@@ -21,26 +21,24 @@ with open('wynik.txt', 'a') as file:
     file.write(str(ile_zrownowazonych) + '\n')
     file.write(str(ile_prawie_zrownowazonych()) + '\n')
 
-permutacje_wszystkich: list[int] = []
+permutacje_wszystkich: list[list[str]] = []
 for d in DATA:
     if len(d) != 8:
-        permutacje_wszystkich.append(False)
+        permutacje_wszystkich.append(None)
     else:
-        perm = permutations(d)
-        temp = []
-        for p in perm:
-            anagram = ''.join(p)
-            if not anagram.startswith('0'):
-                temp.append(anagram)
-        permutacje_wszystkich.append(temp)
-    #FIXME: nie usuwa powtórzeń chyba
-print([len(i) for i in permutacje_wszystkich if i])
-#najwiecej = max(permutacje_wszystkich)
-#anagramy = [DATA[i] for i in range(len(DATA)) if permutacje_wszystkich[i] == najwiecej]
-#with open('wynik.txt', 'a') as file:
-#    file.write('Zadanie 3.2\n')
-#    for a in anagramy:
-#        file.write(a + '\n') #FIXME: coś nadal nie działa
+        perm = list(set(''.join(i) for i in permutations(d)))
+        permutacje_wszystkich.append(perm)
+
+for l in permutacje_wszystkich:
+    if l is not None:
+        for a in l:
+            if a.startswith('0'):
+                l.remove(a)
+
+    
+najwiecej = max(map(lambda x: len(x) if x is not None else 0, permutacje_wszystkich))
+print(najwiecej) #FIXME: XDD CO TO JEST
+#jeżeli wypisze się max(map...) to wypisuje 48. Jeżeli przypisze się do zmiennej i wypisze to wyjdzie 47. Obie odpowiedzi są złe xdd
 
 bezwzgledna_roznica = [abs(int(DATA[i], 2) - int(DATA[i + 1], 2)) for i in range(len(DATA) - 1)]
 najwieksza = max(bezwzgledna_roznica)
