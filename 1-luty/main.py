@@ -1,64 +1,61 @@
 from itertools import permutations
+
 def get_data() -> list:
-    with open('anagram.txt') as file:
-        data = file.read().rstrip().split('\n')
+    """
+    funkcja zwraca listę danych z pliku, każda komórka to kolejna linia pliku 
+    """
+    with open('anagram.txt') as file: # otwieranie pliku
+        data = file.read().rstrip().split('\n') # czytanie, usuwanie białych znaków, rozdzielenie 
     return data
 
-DATA: list[str] = get_data()
+DATA: list[str] = get_data() # stała z wartościami z pliku
 
+# suma liczb binarnych, w których liczba 0 jest równa liczbie 1 
 ile_zrownowazonych: int = sum(d.count('0') == d.count('1') for d in DATA)
-def ile_prawie_zrownowazonych() -> int:
-    ile: int = 0
-    for d in DATA:
-        zera: int = d.count('0')
-        jedynki: int = d.count('1')
-        if (zera - jedynki == 1) or (jedynki - zera == 1):
-            ile += 1
-    return ile
+# suma liczb binarnych, w których bezwzględnia różncia ilości 0 i 1 jest równa 1
+ile_prawie_zrownowazonych: int = sum(abs(d.count('1') - d.count('0')) == 1 for d in DATA)
 
-with open('wynik.txt', 'a') as file:
-    file.write('Zadanie 3.1\n')
+with open('wynik.txt', 'a') as file: # otwórz plik w trybie dopisywania
+    file.write('Zadanie 3.1\n') #zapisywanie odpowiedzi
     file.write(str(ile_zrownowazonych) + '\n')
-    file.write(str(ile_prawie_zrownowazonych()) + '\n')
+    file.write(str(ile_prawie_zrownowazonych) + '\n')
 
-permutacje_wszystkich: list[list[str]] = []
-for d in DATA:
-    if len(d) != 8:
-        permutacje_wszystkich.append(False)
+
+permutacje_wszystkich: list[list[str]] = [] # zmienna pomocnicza zawierające listę list z permutacjami
+for d in DATA: # dla każdej wartości z DATA
+    if len(d) != 8: # jeżeli długość liczby binarnej jest różna od 8
+        permutacje_wszystkich.append(False) # nie liczymy, ponieważ zadanie tego nie wymaga
     else:
-        perm = list(set(''.join(i) for i in permutations(d)))
-        permutacje_wszystkich.append(perm)
+        perm: list = list(set(''.join(i) for i in permutations(d))) # lista UNIKALNYCH anagramów jakie można zrobić z liczby
+        permutacje_wszystkich.append(perm) # dodaje permutacje do listy z wszystkimi dla każdej wartości z DATA 
 
-for l in permutacje_wszystkich:
-    if l:
-        for a in l:
-            if a.startswith('0'):
-                l.remove(a)
+for i in range(len(permutacje_wszystkich)): # dla i w zasięgu długości listy
+    if permutacje_wszystkich[i]: # jeżeli nie jest False
+        permutacje_wszystkich[i] = [x for x in permutacje_wszystkich[i] if not x.startswith('0')] # dodaje wszystkie wartości oprócz tych, które zaczynają się od 0
 
-    
-for i in range(len(permutacje_wszystkich)):
-    if permutacje_wszystkich[i]:
-        permutacje_wszystkich[i] = [x for x in permutacje_wszystkich[i] if not x.startswith('0')] #działa
-ilosc_anagramow = list(map(lambda x: len(x) if x else False, permutacje_wszystkich))
-najwiecej = max(ilosc_anagramow)
-wynik = [DATA[i] for i in range(len(DATA)) if ilosc_anagramow[i] == najwiecej]
+ilosc_anagramow: list = list(map(lambda x: len(x) if x else False, permutacje_wszystkich)) # liczy długość listy, jeżeli wartość jest listą
+najwiecej: int = max(ilosc_anagramow) # największa ilość anagramów
+wynik: list = [DATA[i] for i in range(len(DATA)) if ilosc_anagramow[i] == najwiecej] # tworzy listę z liczbą, z której powstały anagramy jeżeli ilość jej anagramów jest równa największej
 
-with open('wynik.txt', 'a') as file:
+with open('wynik.txt', 'a') as file: # zapisywanie odpowiedzi 
     file.write('\nZadanie 3.2\n')
     for w in wynik:
         file.write(w + '\n')
 
-bezwzgledna_roznica = [abs(int(DATA[i], 2) - int(DATA[i + 1], 2)) for i in range(len(DATA) - 1)]
-najwieksza = max(bezwzgledna_roznica)
+# lista z absolutną różnicą sąsiadujących liczb
+bezwzgledna_roznica: list = [abs(int(DATA[i], 2) - int(DATA[i + 1], 2)) for i in range(len(DATA) - 1)] # najpier przekonwertujemy binarne na dziesiętne, potem odejmujemy je, ustawiamy jako liczba bezwzględna dla wszystkich wartości w DATA 
+najwieksza: int = max(bezwzgledna_roznica) # największa różnica
 with open('wynik.txt', 'a') as file:
     file.write('\nZadanie 3.3\n')
-    file.write(bin(najwieksza)[2:] + '\n')
+    file.write(bin(najwieksza)[2:] + '\n') # zmieniamy na binarne i pozbywamy się prefixu
 
-DATAdzies = [int(i, 2) for i in DATA]
+DATAdzies: list[int] = [int(i, 2) for i in DATA] # zmieniamy wszystkie liczby binarne z DATA na dziesiętne
 
-a = sum(str(d).count('0') == 0 for d in DATAdzies)
-b = [sum(set(int(c) for c in str(d))) for d in DATAdzies]
-with open('wynik.txt', 'a') as file:
+a: int = sum(str(d).count('0') == 0 for d in DATAdzies) # ilość liczb bez cyfry 0
+b: list = [sum(set(int(c) for c in str(d))) for d in DATAdzies] # suma unikalnych cyfr w każdej liczbie z DATAdzies
+
+with open('wynik.txt', 'a') as file: # zapisywanie odpowiedzi
     file.write('\nZadanie 3.4\n')
     file.write(str(a) + '\n')
-    file.write(str(DATAdzies[b.index(max(b))]))
+    file.write(str(DATAdzies[b.index(max(b))])) # liczba z największą sumą unikalnych cyfr
+    # wypisuje wartość z DATAdzies o indeksie, w którym suma unikalnych cyfr jest największa
