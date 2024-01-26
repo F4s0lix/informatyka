@@ -24,26 +24,34 @@ with open('wynik.txt', 'a') as file:
 permutacje_wszystkich: list[list[str]] = []
 for d in DATA:
     if len(d) != 8:
-        permutacje_wszystkich.append(None)
+        permutacje_wszystkich.append(False)
     else:
         perm = list(set(''.join(i) for i in permutations(d)))
         permutacje_wszystkich.append(perm)
 
 for l in permutacje_wszystkich:
-    if l is not None:
+    if l:
         for a in l:
             if a.startswith('0'):
                 l.remove(a)
 
     
-najwiecej = max(map(lambda x: len(x) if x is not None else 0, permutacje_wszystkich))
-print(najwiecej) #FIXME: XDD CO TO JEST
-#jeżeli wypisze się max(map...) to wypisuje 48. Jeżeli przypisze się do zmiennej i wypisze to wyjdzie 47. Obie odpowiedzi są złe xdd
+for i in range(len(permutacje_wszystkich)):
+    if permutacje_wszystkich[i]:
+        permutacje_wszystkich[i] = [x for x in permutacje_wszystkich[i] if not x.startswith('0')] #działa
+ilosc_anagramow = list(map(lambda x: len(x) if x else False, permutacje_wszystkich))
+najwiecej = max(ilosc_anagramow)
+wynik = [DATA[i] for i in range(len(DATA)) if ilosc_anagramow[i] == najwiecej]
+
+with open('wynik.txt', 'a') as file:
+    file.write('\nZadanie 3.2\n')
+    for w in wynik:
+        file.write(w + '\n')
 
 bezwzgledna_roznica = [abs(int(DATA[i], 2) - int(DATA[i + 1], 2)) for i in range(len(DATA) - 1)]
 najwieksza = max(bezwzgledna_roznica)
 with open('wynik.txt', 'a') as file:
-    file.write('Zadanie 3\n')
+    file.write('\nZadanie 3.3\n')
     file.write(bin(najwieksza)[2:] + '\n')
 
 DATAdzies = [int(i, 2) for i in DATA]
@@ -51,6 +59,6 @@ DATAdzies = [int(i, 2) for i in DATA]
 a = sum(str(d).count('0') == 0 for d in DATAdzies)
 b = [sum(set(int(c) for c in str(d))) for d in DATAdzies]
 with open('wynik.txt', 'a') as file:
-    file.write('Zadanie 3.4\n')
+    file.write('\nZadanie 3.4\n')
     file.write(str(a) + '\n')
     file.write(str(DATAdzies[b.index(max(b))]))
