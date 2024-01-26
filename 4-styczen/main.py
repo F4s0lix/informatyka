@@ -1,3 +1,5 @@
+# stworzone przez github.com/F4s0lix
+
 def get_data() -> list:
     """
         funkcja zwraca tablicę tablic z ['data', temperatura]

@@ -1,3 +1,5 @@
+# stworzono przez github.com/F4s0lix
+
 from itertools import permutations
 
 def get_data() -> list:
