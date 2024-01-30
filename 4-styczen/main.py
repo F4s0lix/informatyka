@@ -89,7 +89,6 @@ print('=' * 30 + ' zadanie 3.3 ' + '=' * 30)
 print(ile_ponizej_srednia())
 print('=' * 73)
 print('=' * 30 + ' zadanie 3.4 ' + '=' * 30)
-wyn = srednia_dni()
-for key in wyn:
-    print(NAZWA_DNI[key] + ': ' + str(round(wyn[key], 2)))
+for key in srednia_dni:
+    print(NAZWA_DNI[key] + ': ' + str(round(srednia_dni[key], 2)))
 print('=' * 73)
