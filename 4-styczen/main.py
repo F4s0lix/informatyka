@@ -55,7 +55,7 @@ def daty_temperatura() -> None:
         odp.append(temp)
     odp_dlug = list(map(len, odp)) #lista z długościami list
     wynik = [odp[i] for i in range(len(odp_dlug)) if odp_dlug[i] == max(odp_dlug)] #lista z najdłuższymi okresami
-    print(len(wynik[0] + ' ' + len(wynik))) # wypisuje długość okresu i ile razy wystąpił
+    print(f'{len(wynik[0])} {len(wynik)}') # wypisuje długość okresu i ile razy wystąpił
 
 def rosnaca_temperatura():
     """
@@ -65,7 +65,7 @@ def rosnaca_temperatura():
     odp = []
     while i < len(DATA) - 1: 
         j = i
-        temp = []
+        temp = [DATA[j-1]] if DATA[j-1][1] <= DATA[j][1] else []
         while DATA[j][1] >= DATA[j - 1][1]: #NOTE: zmiana - dopóki teraźniejsza temperatura jest mniejsza lub równa od poprzedniej
             temp.append(DATA[j])
             if j + 1 >= len(DATA) - 1: #bug, który wywalał błąd z za dużą zmienną j
