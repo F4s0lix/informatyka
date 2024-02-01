@@ -55,8 +55,7 @@ def daty_temperatura() -> None:
         odp.append(temp)
     odp_dlug = list(map(len, odp)) #lista z długościami list
     wynik = [odp[i] for i in range(len(odp_dlug)) if odp_dlug[i] == max(odp_dlug)] #lista z najdłuższymi okresami
-    for w in wynik: #wypisuje zakres dat wszystkich najdłuższych okresów
-        print(w[0][0] + ' - ' + w[-1][0])
+    print(len(wynik[0] + ' ' + len(wynik))) # wypisuje długość okresu i ile razy wystąpił
 
 def rosnaca_temperatura():
     """
